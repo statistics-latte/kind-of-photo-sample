@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="assets/vendor/cropperjs/1.5.5/cropper.min.css">
+    <style>
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="edit" style="background-color: honeydew;">
+      <div>
+        <img id="image" src="sample.jpg" />
+      </div>
+
+      <input type="button" id="zoomUp" value="+" />
+      <input type="button" id="zoomDown" value="-" />
+      <input type="button" id="rotRight" value="→" />
+      <input type="button" id="rotLeft" value="←" />
+      <input type="button" id="reset" value="reset" />
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="assets/vendor/cropperjs/1.5.5/cropper.min.js"></script>
+    <script src="assets/vendor/jquery-cropper/1.0.1/jquery-cropper.min.js"></script>
+    <script>
+      $(function(){
+        const $image = $("#image");
+        $image.cropper({
+          dragMode: "move",
+          aspectRatio: 1,
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: true,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+        });
+
+        $("#zoomUp").on("click", function(){
+          $("#image").cropper("zoom", 0.1);
+        });
+        $("#zoomDown").on("click", function(){
+          $("#image").cropper("zoom", -0.1);
+        });
+        $("#rotRight").on("click", function(){
+          $("#image").cropper("rotate", 90);
+        });
+        $("#rotLeft").on("click", function(){
+          $("#image").cropper("rotate", -90);
+        });
+        $("#reset").on("click", function(){
+          $("#image").cropper("reset");
+        });
+      });
+    </script>
+  </body>
+</html>

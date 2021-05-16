@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="assets/vendor/cropperjs/1.5.5/cropper.min.css">
+    <style>
+      img {
+        display: block;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="edit" style="background-color: honeydew;">
+      <div>
+        <img id="image" src="sample.jpg" />
+      </div>
+
+      <input type="button" id="zoomUp" value="+" />
+      <input type="button" id="zoomDown" value="-" />
+      <input type="button" id="rotRight" value="→" />
+      <input type="button" id="rotLeft" value="←" />
+      <input type="button" id="reset" value="reset" />
+    </div>
+
+    <script src="assets/vendor/cropperjs/1.5.5/cropper.min.js"></script>
+    <script>
+      window.onload = function() {
+        const image = document.getElementById("image");
+        const cropper = new Cropper(image, {
+          dragMode: "move",
+          aspectRatio: 1,
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: true,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+        });
+
+        document.getElementById("zoomUp").addEventListener("click", function(){
+          cropper.zoom(0.1);
+        });
+        document.getElementById("zoomDown").addEventListener("click", function(){
+          cropper.zoom(-0.1);
+        });
+        document.getElementById("rotRight").addEventListener("click", function(){
+          cropper.rotate(90);
+        });
+        document.getElementById("rotLeft").addEventListener("click", function(){
+          cropper.rotate(-90);
+        });
+        document.getElementById("reset").addEventListener("click", function(){
+          cropper.reset();
+        });
+      }
+    </script>
+  </body>
+</html>

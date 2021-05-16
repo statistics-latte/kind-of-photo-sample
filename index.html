@@ -3,180 +3,24 @@
   <head>
     <meta charset="utf-8">
     <title>Test</title>
-    <!-- <script src="main.js" defer></script>
-    <link rel="stylesheet" href="style.css"> -->
   </head>
   <body>
-    <div id="main" style="background-color: bisque;">
-      <form id="fileForm">
-        <input id="file" type="file" />
-      </form>
+    <div style="display: flex;">
+      <div style="display: flex; flex-direction: column;">
+        <h3>fabric.js</h3>
+        <iframe width="360" height="480" src="fabric.html">
+        </iframe>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <h3>Cropper.js & jquery-cropper</h3>
+        <iframe width="360" height="480" src="jquery-cropper.html">
+        </iframe>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <h3>Cropper.js (Non Jquery)</h3>
+        <iframe width="360" height="480" src="cropperjs.html">
+        </iframe>
+      </div>
     </div>
-  
-    <div id="edit" style="background-color: honeydew;">
-      <canvas id="c"></canvas>
-
-      <label for="scaleSlider">Zoom</label>
-      <input type="range" id="zoomRange" min="0.5" max="1.5" step="0.25" value="1.0" />
-      <input type="button" id="zoomUp" value="+" />
-      <input type="button" id="zoomDown" value="-" />
-      <input type="button" id="rotRight" value="→" />
-      <input type="button" id="rotLeft" value="←" />
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js" integrity="sha512-Ly9uI3QY88jVXCgkORH2A4Qqz5xYm1pew9jEgedgSpyEg9asvyPISK+CY7QNDN3CMftXU/KLNwQR7XUUo7Cqag==" crossorigin="anonymous"></script>
-    <script>
-      // 変数定義
-      let image;
-      let rect;
-      let rot90 = 0;
-      const canvasWidth = 330;
-      const canvasHeight = 284;
-      const initWidth = 200;
-      const initHeight = 180;
-
-      // 画像初期化
-      function initImage(img) {
-        img.set({
-          top: canvasHeight / 2, 'left': canvasWidth / 2,
-          originX: 'center', originY: 'center',
-          hasControls: false, hasBorders: false,
-          // lockMovementX: true, lockMovementY: true,
-          lockScalingX: true, lockScalingY: true,
-          lockRotation: true,
-          // selectable: false,
-          // globalCompositeOperation: 'destination-atop',
-        });
-        img.scaleToWidth(initWidth);
-        img.scaleToHeight(initHeight);
-      }
-
-      // ズーム
-      function scaleImage(img, scale) {
-        // 倍率初期化
-        image.scaleToWidth(initWidth);
-        image.scaleToHeight(initHeight);
-        const iniScaleX = image.scaleX;
-        const iniScaleY = image.scaleY;
-        const newScaleX = iniScaleX * scale;
-        const newScaleY = iniScaleY * scale;
-
-        // 倍率反映
-        image.set({
-          scaleX: newScaleX,
-          scaleY: newScaleY,
-        }).setCoords();
-      }
-
-      $(function() {
-        // create a wrapper around native canvas element (with id="c")
-        const canvas = new fabric.Canvas('c', {
-          // 背景色
-          backgroundColor: 'rgb(250,250,250)',
-          // サイズ
-          width: canvasWidth,
-          height: canvasHeight,
-          //
-          preserveObjectStacking: true,
-        });
-        // canvas.setWidth(330);
-        // canvas.setHeight(284);
-
-        // 初期
-        fabric.Image.fromURL('sample.jpg', function(oImg) {
-          initImage(oImg);
-          image = oImg;
-          // image = fabric.util.object.clone(oImg);
-          canvas.add(image);
-
-          // 矩形
-          rect = new fabric.Rect({
-            width: 100,
-            height: 100,
-            top: canvasHeight / 2, 'left': canvasWidth / 2,
-            originX: 'center', originY: 'center',
-            hasControls: false, hasBorders: false,
-            lockMovementX: true, lockMovementY: true,
-            lockScalingX: true, lockScalingY: true,
-            lockRotation: true,
-            selectable: false,
-            evented:false,
-            strokeDashArray: [4, 4],
-            stroke: 'red',
-            strokeWidth: 2,
-            fill: 'rgba(0,0,0,0)',
-            });
-          canvas.add(rect);
-        });
-
-        // ファイル選択
-        $("#file").on("change", function(e) {
-          if (e.target.files && e.target.files[0]) {
-
-            var reader = new FileReader();
-            reader.onload = function(e) {
-              // キャンバス表示
-              fabric.Image.fromURL(e.target.result, function(oImg) {
-                // クリア
-                canvas.clear();
-
-                // 追加
-                initImage(oImg);
-                canvas.add(oImg);
-                canvas.add(rect);
-
-                // 変数設定
-                image = oImg;
-              });
-            }
-            reader.readAsDataURL(e.target.files[0]);
-          }
-
-          // フォームリセット
-          // 同一ファイル選択時のチェンジイベントを有効にする
-          $("#fileForm")[0].reset();
-        });
-
-        // ズーム/回転
-        $("#zoomUp").on("click", function(){
-          const value = parseFloat($("#zoomRange").val());
-          const newValue = Math.min(value + 0.25, 1.5);
-          $("#zoomRange").val(newValue);
-          scaleImage(image, newValue);
-          canvas.requestRenderAll();
-        });
-        $("#zoomDown").on("click", function(){
-          const value = parseFloat($("#zoomRange").val());
-          const newValue = Math.max(value - 0.25, 0.5);
-          $("#zoomRange").val(newValue);
-          scaleImage(image, newValue);
-          canvas.requestRenderAll();
-        });
-        $("#zoomRange").on("input change", function(e){
-          const newValue = parseFloat(e.target.value);
-          scaleImage(image, newValue);
-          canvas.requestRenderAll();
-        });
-        $("#rotRight").on("click", function(){
-          rot90 += 1;
-          if (rot90 === 4) {
-            rot90 = 0;
-          }
-          image.set('angle', rot90 * 90).setCoords();
-          canvas.requestRenderAll();
-        });
-        $("#rotLeft").on("click", function(){
-          rot90 -= 1;
-          if (rot90 === -1) {
-            rot90 = 3;
-          }
-          console.log(rot90);
-          image.set('angle', rot90 * 90).setCoords();
-          canvas.requestRenderAll();
-        }); 
-
-      });
-    </script>
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Test</title>
-    <link rel="stylesheet" href="assets/vendor/cropperjs/1.5.5/cropper.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.5/cropper.min.css" integrity="sha512-Aix44jXZerxlqPbbSLJ03lEsUch9H/CmnNfWxShD6vJBbboR+rPdDXmKN+/QjISWT80D4wMjtM4Kx7+xkLVywQ==" crossorigin="anonymous" />
     <style>
       img {
         display: block;
@@ -12,6 +12,7 @@
     </style>
   </head>
   <body>
+    <h1>Cropper.js (Non Jquery)</h1>
     <div id="edit" style="background-color: honeydew;">
       <div>
         <img id="image" src="sample.jpg" />
@@ -24,7 +25,7 @@
       <input type="button" id="reset" value="reset" />
     </div>
 
-    <script src="assets/vendor/cropperjs/1.5.5/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.5/cropper.min.js" integrity="sha512-E4KfIuQAc9ZX6zW1IUJROqxrBqJXPuEcDKP6XesMdu2OV4LW7pj8+gkkyx2y646xEV7yxocPbaTtk2LQIJewXw==" crossorigin="anonymous"></script>
     <script>
       window.onload = function() {
         const image = document.getElementById("image");

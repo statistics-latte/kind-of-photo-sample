@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+
+    <link rel="stylesheet" href="assets/vendor/croppie/2.6.5/croppie.min.css" />
+    <style>
+      /* Remove tooltip from Slider */
+      input[type=range]::-ms-tooltip {
+        display: none;
+      }
+      .cr-boundary {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC");
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Croppie (JQuery)</h3>
+    <div id="main" style="background-color: bisque;">
+      <form id="fileForm">
+        <input id="file" type="file" />
+      </form>
+    </div>
+  
+    <div id="edit" style="background-color: honeydew;">
+      <div class="demo"></div>
+
+      <input type="button" class="rotate" data-deg="-90" value="→" />
+      <input type="button" class="rotate" data-deg="90" value="←" />
+      <input type="button" class="reset" value="Reset" />
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="assets/vendor/croppie/2.6.5/croppie.min.js"></script>
+    <script>
+      let url = "sample.jpg";
+
+      function createCroppie(url) {
+        $('.demo').croppie({
+          url: url,
+          viewport: {
+            width: 200,
+            height: 200,
+          },
+          boundary: {
+            width: 300,
+            height: 300,
+          },
+          showZoomer: true,
+          enableOrientation: true,
+          enforceBoundary: false,
+          // minZoom: 0.1, 設定できるが画像サイズとviewport, boundaryから算出する必要がある
+          // maxZoom: 100, 設定できるが画像サイズとviewport, boundaryから算出する必要がある
+          // enableExif: true, // ローカルではエラーになる (file://...)
+        });
+      }
+
+      $(function() {
+        createCroppie(url);
+
+        $(".rotate").on("click", function() {
+          $('.demo').croppie("rotate", parseInt($(this).data("deg")));
+        });
+        $(".reset").on("click", function() {
+          $('.demo').croppie("bind", {
+            url: url,
+          });
+        });
+
+        // ファイル選択
+        $("#file").on("change", function(e) {
+          if (e.target.files && e.target.files[0]) {
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              if (e.target.result) {
+                url = e.target.result;
+                $('.demo').croppie("bind", {
+                  url: e.target.result,
+                });
+              }
+            }
+            reader.readAsDataURL(e.target.files[0]);
+          }
+
+          // フォームリセット
+          // 同一ファイル選択時のチェンジイベントを有効にする
+          $("#fileForm")[0].reset();
+        });
+      });
+    </script>
+  </body>
+</html>

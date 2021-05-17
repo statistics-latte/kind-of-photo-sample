@@ -1,4 +1,4 @@
 # kind-of-photo-sample
-- Using fabric.js, Cropper.js (jQuery, jquery-cropper)
+- Using fabric.js, Cropper.js, Croppie (jQuery, jquery-cropper)
 - Without jQuery-ui
-- IE11 compatible (Only facric.js version)
+- IE11 compatible (facric.js, Croppie version)
